@@ -1,57 +1,58 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 using Permutations.Models;
 
 namespace Permutations.Controllers
 {
-    #region PermutationController
     [Route("api/values/")]
     [ApiController]
 
+    //Class that controls the Post and Get request of this service
     public class PermutationsController : Controller
     {
-        //constants
+        #region constants
         private const string BAD_REQUEST_MSG = "Invalid input. Input needs to be lowercase English characters";
+        #endregion
 
         private readonly KnownWords _knownWords;
 
+        //called by service.AddControllers().
         public PermutationsController(KnownWords knownWords)
         {
             _knownWords = knownWords;
         }
-        #endregion
 
+        //GetPermutation returns a hashset of all the known words that are a
+        //permutation of the given word
+        //return: IActionResult return type- appropriate when multiple ActionResult
+        //return. The ActionResult types represent various HTTP status codes.
         // GET: api/values/abc
         [HttpGet("{word}")]
-
         public IActionResult GetPermutaion(string word)
         {
             if (!IsValid(word))
             {
-                //todo: deal with invalid input
                 return BadRequest(BAD_REQUEST_MSG);
             }
             return Ok(_knownWords.GetPermutation(word));
         }
 
+        //PostPermutation adds content of the request to the list of known words
+        //return: IActionResult return type- appropriate when multiple ActionResult
+        //return. The ActionResult types represent various HTTP status codes.
         // POST: api/values/
         [HttpPost]
-        public IActionResult PostPermutation(string word)
+        public IActionResult PostPermutation([FromBody] string word)
         {
             if (!IsValid(word))
             {
-                //todo: deal with invalid input
                 return BadRequest(BAD_REQUEST_MSG);
             }
-            var permuationsOfWord = _knownWords.PostPermutation(word);
-            return CreatedAtAction(nameof(GetPermutaion), new { word = word }, permuationsOfWord);
+            var permuationsOfWord = _knownWords.AddWord(word);
+            return CreatedAtAction(nameof(GetPermutaion), new { word = word }, word);
         }
 
-        //This method checks validity of input word-needs to be lowercase english
+        //Checks input is lowercase english
         private bool IsValid(string word)
         {
             if (word == null)
