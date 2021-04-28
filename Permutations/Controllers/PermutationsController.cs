@@ -8,11 +8,7 @@ using Permutations.Models;
 
 namespace Permutations.Controllers
 {
- 
-
     #region PermutationController
-
-    //TODO: need to change this probably
     [Route("api/values/")]
     [ApiController]
 
@@ -21,59 +17,47 @@ namespace Permutations.Controllers
         //constants
         private const string BAD_REQUEST_MSG = "Invalid input. Input needs to be lowercase English characters";
 
-        private readonly KnownWordsDictionary _knownWords;
+        private readonly KnownWords _knownWords;
 
-        public PermutationsController(KnownWordsDictionary knownWords)
+        public PermutationsController(KnownWords knownWords)
         {
             _knownWords = knownWords;
         }
         #endregion
 
-        // GET: api/values/"abc"
+        // GET: api/values/abc
         [HttpGet("{word}")]
 
-        public IActionResult GetPermutaions(string word)
+        public IActionResult GetPermutaion(string word)
         {
             if (!IsValid(word))
             {
                 //todo: deal with invalid input
                 return BadRequest(BAD_REQUEST_MSG);
             }
-            return Ok(_knownWords.GetPermutations(word));
+            return Ok(_knownWords.GetPermutation(word));
         }
 
-        //// POST: api/values/
-        //[HttpPost]
-        //public async Task<ActionResult<string>> PostPermutation(string word)
-        //{
-        //    if (!IsValid(word))
-        //    {
-        //        //todo: deal with invalid input
-        //        return BadRequest(BAD_REQUEST_MSG);
-        //    }
+        // POST: api/values/
+        [HttpPost]
+        public IActionResult PostPermutation(string word)
+        {
+            if (!IsValid(word))
+            {
+                //todo: deal with invalid input
+                return BadRequest(BAD_REQUEST_MSG);
+            }
+            var permuationsOfWord = _knownWords.PostPermutation(word);
+            return CreatedAtAction(nameof(GetPermutaion), new { word = word }, permuationsOfWord);
+        }
 
-        //    var wordLetters = word.ToCharArray().OrderBy(c => c).ToString();
-
-        //    if (!_knownWords.ContainsKey(wordLetters))
-        //    {
-        //        _knownWords.Add(wordLetters, new HashSet<string> { word });
-        //    }
-        //    else
-        //    {
-        //        _knownWords[wordLetters].Add(word);
-        //    }
-
-        //    //TODO: if i need to write to th file- add this here with File.AppendText or WriteLines...
-
-        //    //TODO: is this correct???
-        //    //todo: do i need to return this when the word already exists...? i dont even checkthis
-
-        //    return CreatedAtAction(nameof(GetPermutaions), new { id = wordLetters }, word);
-
-        //}
-
+        //This method checks validity of input word-needs to be lowercase english
         private bool IsValid(string word)
         {
+            if (word == null)
+            {
+                return false;
+            }
             foreach (Char c in word)
             {
                 if (!Char.IsLower(c))

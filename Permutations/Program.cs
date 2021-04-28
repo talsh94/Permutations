@@ -9,12 +9,6 @@ using Microsoft.Extensions.Logging;
 using Permutations.Models;
 using System.IO;
 
-//static class Constants
-//{
-//    const string PATH = @"somepath";
-//    const char SPLIT_BY = ' ';
-//}
-
 namespace Permutations
 {
     public class Program
