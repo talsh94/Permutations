@@ -6,6 +6,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Permutations.Models;
+using System.IO;
+
+//static class Constants
+//{
+//    const string PATH = @"somepath";
+//    const char SPLIT_BY = ' ';
+//}
 
 namespace Permutations
 {
@@ -14,6 +22,7 @@ namespace Permutations
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
