@@ -11,7 +11,7 @@ using Xunit;
 
 namespace XunitTests
 {
-    public class UnitTest1
+    public class UnitTestPermutationController
     {
         [Fact]
         public async Task Get_ReturnsHashSet_WithAllPermutations()
