@@ -11,6 +11,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    <PackageReference Include="UnitTestGenerator" Version="0.4.4" />
+    <PackageReference Include="UnitTestGenerator.Extensions.Composition" Version="0.4.4" />
+    <PackageReference Include="Moq" Version="4.16.1" />
   </ItemGroup>
 
   <ItemGroup>
